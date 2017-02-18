@@ -1,5 +1,6 @@
 import random
 import math
+from functools import reduce
 
 class Board:
     #first value in each ordered pair is the tile number, second is the probability of spawning

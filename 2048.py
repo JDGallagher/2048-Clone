@@ -1,5 +1,6 @@
 import random
 import math
+from functools import reduce
 
 class Board:
     #first value in each ordered pair is the tile number, second is the probability of spawning
@@ -22,8 +23,17 @@ class Board:
             
         self.table = table
 
+    def score(self):
+        score = 0
+        for column in self.table:
+            for tile in column:
+                score += ((math.log(tile,2) - 1)*tile if tile != 0 else 0)
+        return int(score)
+    
     def display(self):
         #displays the board
+        score = self.score()
+        print('Score - {}\n'.format(self.score()))
         max_len = 0
         for i in range(self.width):
             for j in range(self.height):
@@ -145,7 +155,7 @@ class Board:
         self.swipe_right()
         self.swipe_down()
         if self.table == true_table:
-            print('u lose, loser!')
+            print('u lose, loser! Your score was {}.'.format(self.score()))
             while True:
                 pass
         else:

@@ -9,8 +9,8 @@ class Board:
     def __init__(self,w,h):
         self.width = w
         self.height = h
+        self.score = 0
         self._generate_table()
-        self.spawn_tile()
 
     def _generate_table(self):
         #Creates table full of 0's
@@ -23,26 +23,19 @@ class Board:
             
         self.table = table
 
-    def score(self):
-        score = 0
-        for column in self.table:
-            for tile in column:
-                score += ((math.log(tile,2) - 1)*tile if tile != 0 else 0)
-        return int(score)
-    
     def display(self):
-        #displays the board
-        score = self.score()
-        print('Score - {}\n'.format(self.score()))
-        max_len = 0
+        #displays the board]
+        print('\nScore - {}\n'.format(self.score))
+        max_len = []
         for i in range(self.width):
+            max_len.append(0)
             for j in range(self.height):
-                max_len = max([len(str(self.table[i][j])),max_len])
+                max_len[i] = max([len(str(self.table[i][j])),max_len[i]])
         for j in range(self.height):
             row = ''
             for i in range(self.width):
                 value = self.table[i][j]
-                len_diff = max_len - len(str(value)) if value != 0 else max_len
+                len_diff = max_len[i] - len(str(value)) if value != 0 else max_len[i]
                 #Makes all tiles the same width and attempts to center values
                 row += '[{0}{2}{1}]'.format(' ' * math.floor(len_diff/2), ' ' * math.ceil(len_diff/2), value if value != 0 else '')
             print(row)
@@ -107,6 +100,7 @@ class Board:
                 if destination == current and current != 0:
                     self.table[i][j] = current * 2
                     self.table[i][j+1] = 0
+                    self.score += current*2
                     table_changed = True
 
         return table_changed
@@ -149,30 +143,54 @@ class Board:
         self.table  = [[x[i] for x in self.table] for i in range(len(self.table[0]))]
 
     def game_over_check(self):
-        true_table = self.table
-        self.swipe_up()
-        self.swipe_left()
-        self.swipe_right()
-        self.swipe_down()
-        if self.table == true_table:
-            print('u lose, loser! Your score was {}.'.format(self.score()))
-            while True:
-                pass
-        else:
-            self.table = true_table
+        #Checks if there are any possible moves left
+        for column in self.table:
+            if 0 in column:
+                return
 
+        for i in range(self.width):
+            for j in range(self.height):
+                try:
+                    if self.table[i][j] == self.table[i-1][j] and i != 0:
+                        print('a-{0},{1}'.format(i,j))
+                        return
+                except:
+                    pass
+                try:
+                    if self.table[i][j] == self.table[i+1][j]:
+                        print('b-{0},{1}'.format(i,j))
+                        return
+                except:
+                    pass
+                try:
+                    if self.table[i][j] == self.table[i][j-1]and j != 0:
+                        print('c-{0},{1}'.format(i,j))
+                        return
+                except:
+                    pass
+                try:
+                    if self.table[i][j] == self.table[i][j+1]:
+                        print('d-{0},{1}'.format(i,j))
+                        return
+                except:
+                    pass
+
+        print('u lose, loser! Your score was {}.'.format(self.score))
+        while True:
+            input('')
+        
 if __name__ == '__main__':
     BOARD_WIDTH = 4
     BOARD_HEIGHT = 4
 
     board = Board(BOARD_WIDTH,BOARD_HEIGHT)
+    board.spawn_tile()
     board.display()
 
     control_dict = {'w':board.swipe_up,
                     's':board.swipe_down,
                     'a':board.swipe_left,
-                    'd':board.swipe_right
-                    }
+                    'd':board.swipe_right}
 
     while True:
         direction = input(': ')

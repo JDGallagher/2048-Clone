@@ -138,6 +138,19 @@ class Board:
         self.swipe_down()
         self.table  = [[x[i] for x in self.table] for i in range(len(self.table[0]))]
 
+    def game_over_check(self):
+        true_table = self.table
+        self.swipe_up()
+        self.swipe_left()
+        self.swipe_right()
+        self.swipe_down()
+        if self.table == true_table:
+            print('u lose, loser!')
+            while True:
+                pass
+        else:
+            self.table = true_table
+
 if __name__ == '__main__':
     BOARD_WIDTH = 4
     BOARD_HEIGHT = 4
@@ -158,4 +171,5 @@ if __name__ == '__main__':
             continue
         control_dict[direction]()
         board.display()
+        board.game_over_check()
 

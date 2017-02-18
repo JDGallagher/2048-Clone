@@ -152,25 +152,21 @@ class Board:
             for j in range(self.height):
                 try:
                     if self.table[i][j] == self.table[i-1][j] and i != 0:
-                        print('a-{0},{1}'.format(i,j))
                         return
                 except:
                     pass
                 try:
                     if self.table[i][j] == self.table[i+1][j]:
-                        print('b-{0},{1}'.format(i,j))
                         return
                 except:
                     pass
                 try:
-                    if self.table[i][j] == self.table[i][j-1]and j != 0:
-                        print('c-{0},{1}'.format(i,j))
+                    if self.table[i][j] == self.table[i][j-1] and j != 0:
                         return
                 except:
                     pass
                 try:
                     if self.table[i][j] == self.table[i][j+1]:
-                        print('d-{0},{1}'.format(i,j))
                         return
                 except:
                     pass

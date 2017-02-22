@@ -1,5 +1,6 @@
 import random
 import math
+import numpy as np
 
 class Board:
     #first value in each ordered pair is the tile number, second is the probability of spawning
@@ -23,7 +24,7 @@ class Board:
         self.table = table
 
     def get_table(self):
-        return self.table
+        return np.reshape(self.table, ((4, 4)))
 
     def get_score(self):
         return self.score

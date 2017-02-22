@@ -10,6 +10,8 @@ class Board:
         self.height = h
         self.score = 0
         self._generate_table()
+        self.spawn_tile()
+        self.spawn_tile()
 
     def _generate_table(self):
         #Creates table full of 0's
@@ -185,7 +187,6 @@ if __name__ == '__main__':
     BOARD_HEIGHT = 4
 
     board = Board(BOARD_WIDTH,BOARD_HEIGHT)
-    board.spawn_tile()
     board.display()
 
     control_dict = {'w':board.swipe_up,

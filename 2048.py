@@ -22,6 +22,12 @@ class Board:
             
         self.table = table
 
+    def get_table(self):
+        return self.table
+
+    def get_score(self):
+        return self.score
+
     def display(self):
         #displays the board]
         print('\nScore - {}\n'.format(self.score))
